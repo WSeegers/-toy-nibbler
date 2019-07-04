@@ -5,8 +5,8 @@
 #include <stdexcept>
 
 NibblerEngine::NibblerEngine(const std::string &path)
-		: _path(path),
-			_cellMap(50, 50)
+	: _path(path),
+	  _cellMap(50, 50)
 {
 	this->_cellMap.setCell(Vec2i(10, 10), eCellType::wall);
 	this->_cellMap.setCell(Vec2i(10, 11), eCellType::food);
@@ -101,7 +101,9 @@ void NibblerEngine::render()
 
 bool NibblerEngine::loadRenderer()
 {
-	std::string sdlPath = this->_path + "/BlockRenderer/libBlockRenderer.so";
+	std::string sdlPath = this->_path + AS_DYNLIB("/SDL2Renderer/libSDL2Renderer");
+	// std::string sdlPath = this->_path + AS_DYNLIB("/SFMLRenderer/libSFMLRenderer");
+
 	this->_libHandle = dlopen(sdlPath.c_str(), RTLD_LAZY);
 	if (!this->_libHandle)
 	{

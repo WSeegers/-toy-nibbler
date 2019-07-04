@@ -5,6 +5,7 @@
 #include "IRenderable.hpp"
 #include "../include/Colour.hpp"
 
+#include <stdint.h>
 #include <vector>
 #include <map>
 
@@ -25,13 +26,13 @@ public:
 
 private:
 	std::vector<eCellType> _map = {};
-	uint _width;
-	uint _height;
+	uint32_t _width;
+	uint32_t _height;
 
 	void assertInBounds(Vec2i pos);
 
 public:
-	CellMap(uint width, uint height);
+	CellMap(uint32_t width, uint32_t height);
 	~CellMap();
 
 	void setCell(Vec2i pos, eCellType cellType);

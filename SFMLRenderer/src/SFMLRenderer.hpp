@@ -1,22 +1,21 @@
-#ifndef _SDLRenderer_hpp_
-#define _SDLRenderer_hpp_
+#ifndef _SFMLRenderer_hpp_
+#define _SFMLRenderer_hpp_
 
 #include <IRenderer.hpp>
-#include <SDL2/SDL.h>
+#include <SFML/Graphics.hpp>
 
-class BlockRenderer : public IRenderer
+class SFMLRenderer : public IRenderer
 {
 private:
-	SDL_Window *_window{};
-	SDL_Surface *_surface{};
+	sf::RenderWindow *_window = 0;
 
 	int _width = -1;
 	int _height = -1;
 	int _cellSize = -1;
 
 public:
-	BlockRenderer();
-	virtual ~BlockRenderer();
+	SFMLRenderer();
+	virtual ~SFMLRenderer();
 
 	virtual void init(int width, int height, int cellSize);
 	virtual void setCellColour(int width, int height, Colour colour);

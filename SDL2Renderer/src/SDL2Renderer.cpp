@@ -1,32 +1,30 @@
-#include "./BlockRenderer.hpp"
+#include "./SDL2Renderer.hpp"
 
-BlockRenderer::BlockRenderer()
+SDL2Renderer::SDL2Renderer()
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 		throw "SDL failed to init";
 }
-BlockRenderer::~BlockRenderer()
+
+SDL2Renderer::~SDL2Renderer()
 {
 	if (this->_window)
 		SDL_DestroyWindow(this->_window);
 	SDL_Quit();
 }
 
-void BlockRenderer::init(int width, int height, int cellSize)
+void SDL2Renderer::init(int width, int height, int cellSize)
 {
 	this->_width = width;
 	this->_height = height;
 	this->_cellSize = cellSize;
 
-	int _width = width * cellSize;
-	int _height = height * cellSize;
-
 	this->_window = SDL_CreateWindow("SDL Tutorial",
-																	 SDL_WINDOWPOS_UNDEFINED,
-																	 SDL_WINDOWPOS_UNDEFINED,
-																	 _width,
-																	 _height,
-																	 SDL_WINDOW_SHOWN);
+									 SDL_WINDOWPOS_UNDEFINED,
+									 SDL_WINDOWPOS_UNDEFINED,
+									 width * cellSize,
+									 height * cellSize,
+									 SDL_WINDOW_SHOWN);
 
 	if (!this->_window)
 		throw "SDL failed to create window";
@@ -35,26 +33,26 @@ void BlockRenderer::init(int width, int height, int cellSize)
 	SDL_FillRect(this->_surface, 0, 0);
 }
 
-void BlockRenderer::setCellColour(int x, int y, Colour colour)
+void SDL2Renderer::setCellColour(int x, int y, Colour colour)
 {
 	auto [r, g, b] = colour;
 	auto _color = SDL_MapRGB(this->_surface->format, r, g, b);
 
 	SDL_Rect rect = {x * this->_cellSize,
-									 y * this->_cellSize,
-									 this->_cellSize,
-									 this->_cellSize};
+					 y * this->_cellSize,
+					 this->_cellSize,
+					 this->_cellSize};
 
 	SDL_FillRect(this->_surface, &rect, _color);
 }
 
-void BlockRenderer::blit()
+void SDL2Renderer::blit()
 {
 	SDL_UpdateWindowSurface(this->_window);
 	SDL_FillRect(this->_surface, 0, 0);
 }
 
-void BlockRenderer::getEvents(EventQueue &events)
+void SDL2Renderer::getEvents(EventQueue &events)
 {
 	SDL_Event e;
 
@@ -88,5 +86,5 @@ void BlockRenderer::getEvents(EventQueue &events)
 
 extern "C" IRenderer *getRendererInstance(void)
 {
-	return new BlockRenderer();
+	return new SDL2Renderer();
 }

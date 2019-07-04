@@ -8,6 +8,14 @@
 
 #include <string>
 
+#if __APPLE__
+#define _LIBSUFFIX_ "dylib"
+#else
+#define _LIBSUFFIX_ "so"
+#endif
+
+#define AS_DYNLIB(name) name "." _LIBSUFFIX_
+
 class NibblerEngine : private AMainLoop
 {
 private:

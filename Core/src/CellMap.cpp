@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-CellMap::CellMap(uint width, uint height)
+CellMap::CellMap(uint32_t width, uint32_t height)
 		: _map(width * height),
 			_width(width),
 			_height(height) {}
