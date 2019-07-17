@@ -4,18 +4,23 @@
 #include <iostream>
 #include <stdexcept>
 
-NibblerEngine::NibblerEngine(const std::string &path)
-	: _path(path),
-	  _cellMap(50, 50)
+const char *rendererPaths[2] =
+		{AS_DYNLIB("/SDL2Renderer/libSDL2Renderer"),
+		 AS_DYNLIB("/SFMLRenderer/libSFMLRenderer")};
+
+NibblerEngine::NibblerEngine(const std::string &path, uint width, uint height)
+		: _path(path),
+			_cellMap(width, height)
 {
 	this->_cellMap.setCell(Vec2i(10, 10), eCellType::wall);
 	this->_cellMap.setCell(Vec2i(10, 11), eCellType::food);
 	this->_cellMap.setCell(Vec2i(11, 10), eCellType::food);
 
-	if (!this->loadRenderer())
+	this->_snake.setPosition(Vec2i(width / 2, height / 2));
+
+	if (!this->loadRenderer(eRenderer::sdl))
 		return;
 
-	this->_renderer->init(50, 50, 15);
 	this->start();
 }
 
@@ -58,6 +63,14 @@ void NibblerEngine::handleKeys()
 		case eEventType::quit:
 			this->stop();
 			break;
+		case eEventType::one:
+			this->unloadRenderer();
+			this->loadRenderer(eRenderer::sdl);
+			break;
+		case eEventType::two:
+			this->unloadRenderer();
+			this->loadRenderer(eRenderer::sfml);
+			break;
 		default:
 			break;
 		}
@@ -99,10 +112,24 @@ void NibblerEngine::render()
 	this->_renderer->blit();
 }
 
-bool NibblerEngine::loadRenderer()
+void NibblerEngine::unloadRenderer()
 {
-	std::string sdlPath = this->_path + AS_DYNLIB("/SDL2Renderer/libSDL2Renderer");
-	// std::string sdlPath = this->_path + AS_DYNLIB("/SFMLRenderer/libSFMLRenderer");
+	if (this->_renderer)
+	{
+		delete this->_renderer;
+		this->_renderer = nullptr;
+	}
+
+	if (this->_libHandle)
+	{
+		dlclose(this->_libHandle);
+		this->_libHandle = nullptr;
+	}
+}
+
+bool NibblerEngine::loadRenderer(eRenderer selectedRenderer)
+{
+	std::string sdlPath = this->_path + rendererPaths[selectedRenderer];
 
 	this->_libHandle = dlopen(sdlPath.c_str(), RTLD_LAZY);
 	if (!this->_libHandle)
@@ -127,5 +154,9 @@ bool NibblerEngine::loadRenderer()
 	auto getRendererInstance = reinterpret_cast<IRenderer *(*)(void)>(funcPtr);
 
 	this->_renderer = getRendererInstance();
+	this->_renderer->init(
+			this->_cellMap.width(),
+			this->_cellMap.height(),
+			this->cellSize);
 	return true;
 }

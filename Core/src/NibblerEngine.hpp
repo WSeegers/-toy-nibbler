@@ -16,6 +16,12 @@
 
 #define AS_DYNLIB(name) name "." _LIBSUFFIX_
 
+enum eRenderer
+{
+	sdl = 0,
+	sfml = 1,
+};
+
 class NibblerEngine : private AMainLoop
 {
 private:
@@ -26,16 +32,19 @@ private:
 	IRenderer *_renderer = 0;
 	std::queue<eEventType> _events;
 
+	uint cellSize = 15;
+
 	virtual void updateFunc(AMainLoop &self);
 
 	void handleKeys();
 	void update();
 	void render();
 
-	bool loadRenderer();
+	bool loadRenderer(eRenderer renderer);
+	void unloadRenderer();
 
 public:
-	NibblerEngine(const std::string &path);
+	NibblerEngine(const std::string &path, uint width, uint height);
 	~NibblerEngine();
 };
 

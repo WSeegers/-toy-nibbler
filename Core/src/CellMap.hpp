@@ -26,17 +26,21 @@ public:
 
 private:
 	std::vector<eCellType> _map = {};
-	uint32_t _width;
-	uint32_t _height;
+	uint _width;
+	uint _height;
 
 	void assertInBounds(Vec2i pos);
+	void setBoarder();
 
 public:
-	CellMap(uint32_t width, uint32_t height);
+	CellMap(uint width, uint height);
 	~CellMap();
 
 	void setCell(Vec2i pos, eCellType cellType);
 	eCellType atCell(Vec2i pos);
+
+	uint width();
+	uint height();
 
 	virtual void render(IRenderer &renderer) const;
 };

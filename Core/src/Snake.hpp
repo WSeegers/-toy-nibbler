@@ -45,6 +45,7 @@ public:
 	void down();
 	void right();
 
+	void setPosition(Vec2i position);
 	Vec2i head();
 
 	bool isColliding();

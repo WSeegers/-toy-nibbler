@@ -94,3 +94,9 @@ void Snake::render(IRenderer &renderer) const
 }
 
 Vec2i Snake::head() { return this->_body.back(); }
+
+void Snake::setPosition(Vec2i position)
+{
+	for (Vec2i &p : this->_body)
+		p = position;
+};

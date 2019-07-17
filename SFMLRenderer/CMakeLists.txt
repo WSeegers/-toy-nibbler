@@ -9,5 +9,5 @@ target_include_directories(SFMLRenderer SYSTEM
 target_link_libraries(SFMLRenderer 
 	PUBLIC sfml-graphics
 	PUBLIC sfml-window
-	PUBLIC sfml-system.dylib
+	PUBLIC sfml-system
 )

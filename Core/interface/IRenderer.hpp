@@ -13,7 +13,10 @@ enum eEventType
 	down,
 	right,
 	esc,
-	quit
+	quit,
+	one,
+	two,
+	three
 };
 typedef std::queue<eEventType> EventQueue;
 
