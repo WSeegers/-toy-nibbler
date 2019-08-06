@@ -7,9 +7,10 @@
 #include <stdexcept>
 #include <algorithm>
 
-const char *rendererPaths[2] =
+const char *rendererPaths[3] =
 	{AS_DYNLIB("/SDL2Renderer/libSDL2Renderer"),
-	 AS_DYNLIB("/SFMLRenderer/libSFMLRenderer")};
+	 AS_DYNLIB("/SFMLRenderer/libSFMLRenderer"),
+	 AS_DYNLIB("/SDL2Inverter/libSDL2Inverter")};
 
 NibblerEngine::NibblerEngine(const std::string &path, uint width, uint height)
 	: _path(path),
@@ -72,6 +73,10 @@ void NibblerEngine::handleKeys()
 		case eEventType::two:
 			this->unloadRenderer();
 			this->loadRenderer(eRenderer::sfml);
+			break;
+		case eEventType::three:
+			this->unloadRenderer();
+			this->loadRenderer(eRenderer::sdli);
 			break;
 		default:
 			break;
@@ -140,7 +145,7 @@ bool NibblerEngine::loadRenderer(eRenderer selectedRenderer)
 		std::cerr << "Failed to load sdlRenderer" << std::endl;
 		std::cerr << dlerror() << std::endl;
 
-		throw std::runtime_error("Failed to load sdlRenderer");
+		// throw std::runtime_error("Failed to load sdlRenderer");
 		return false;
 	}
 
@@ -150,7 +155,8 @@ bool NibblerEngine::loadRenderer(eRenderer selectedRenderer)
 		std::cerr << "Failed to load getRendererInstance" << std::endl;
 		std::cerr << dlerror() << std::endl;
 
-		throw std::runtime_error("Failed to load getRendererInstance");
+		dlclose(this->_libHandle);
+		// throw std::runtime_error("Failed to load getRendererInstance");
 		return false;
 	}
 

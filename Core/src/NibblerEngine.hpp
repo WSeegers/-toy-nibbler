@@ -20,6 +20,7 @@ enum eRenderer
 {
 	sdl = 0,
 	sfml = 1,
+	sdli = 2,
 };
 
 class NibblerEngine : private AMainLoop

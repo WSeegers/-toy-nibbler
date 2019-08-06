@@ -10,6 +10,7 @@ endif()
 
 add_subdirectory(Core)
 add_subdirectory(SDL2Renderer)
+add_subdirectory(SDL2Inverter)
 add_subdirectory(SFMLRenderer)
 
 add_executable(nibbler main.cpp)
