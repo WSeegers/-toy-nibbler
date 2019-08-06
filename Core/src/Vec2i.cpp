@@ -17,10 +17,16 @@ Vec2i &Vec2i::operator=(const Vec2i &rhs)
 Vec2i Vec2i::operator+(const Vec2i &rhs)
 {
 	return Vec2i(this->x + rhs.x,
-							 this->y + rhs.y);
+				 this->y + rhs.y);
 }
 
 bool Vec2i::operator==(const Vec2i &rhs)
 {
 	return (this->x == rhs.x) && (this->y == rhs.y);
+}
+
+std::ostream &operator<<(std::ostream &os, const Vec2i &self)
+{
+	os << '(' << self.x << ',' << self.y << ')';
+	return os;
 }

@@ -2,6 +2,7 @@
 #define _vec2i_hpp_
 
 #include <utility>
+#include <iostream>
 
 struct Vec2i
 {
@@ -17,5 +18,7 @@ struct Vec2i
 	Vec2i operator+(const Vec2i &rhs);
 	bool operator==(const Vec2i &rhs);
 };
+
+std::ostream &operator<<(std::ostream &os, const Vec2i &self);
 
 #endif

@@ -53,8 +53,12 @@ void CellMap::setBoarder()
 	{
 		this->setCell(Vec2i(x, y), eCellType::wall);
 		this->setCell(Vec2i(x, this->_height - 1), eCellType::wall);
-		this->setCell(Vec2i(y, x), eCellType::wall);
-		this->setCell(Vec2i(this->_width - 1, x), eCellType::wall);
+	}
+	x = 0;
+	for (y = 0; y < this->_height; y++)
+	{
+		this->setCell(Vec2i(x, y), eCellType::wall);
+		this->setCell(Vec2i(this->_width - 1, y), eCellType::wall);
 	}
 }
 

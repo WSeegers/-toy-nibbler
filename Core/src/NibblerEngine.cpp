@@ -1,8 +1,11 @@
 #include "NibblerEngine.hpp"
 
+#include <cstdlib>
+#include <ctime>
 #include <dlfcn.h>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 const char *rendererPaths[2] =
 	{AS_DYNLIB("/SDL2Renderer/libSDL2Renderer"),
@@ -12,6 +15,7 @@ NibblerEngine::NibblerEngine(const std::string &path, uint width, uint height)
 	: _path(path),
 	  _cellMap(width, height)
 {
+	std::srand(std::time(0));
 	this->addFood();
 
 	this->_snake.setPosition(Vec2i(width / 2, height / 2));
@@ -162,8 +166,13 @@ bool NibblerEngine::loadRenderer(eRenderer selectedRenderer)
 
 void NibblerEngine::addFood()
 {
-	Vec2i foodPos(
-		std::rand() % (this->_cellMap.width() - 1) + 1,
-		std::rand() % (this->_cellMap.height() - 1) + 1);
+	auto getFood = [=]() -> Vec2i {
+		return Vec2i(
+			std::rand() % (this->_cellMap.width() - 2) + 1,
+			std::rand() % (this->_cellMap.height() - 2) + 1);
+	};
+
+	Vec2i foodPos = getFood();
+
 	this->_cellMap.setCell(foodPos, eCellType::food);
 }

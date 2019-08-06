@@ -20,11 +20,11 @@ void SDL2Renderer::init(int width, int height, int cellSize)
 	this->_cellSize = cellSize;
 
 	this->_window = SDL_CreateWindow("SDL Renderer",
-																	 10,
-																	 10,
-																	 width * cellSize,
-																	 height * cellSize,
-																	 SDL_WINDOW_SHOWN);
+									 10,
+									 10,
+									 width * cellSize,
+									 height * cellSize,
+									 SDL_WINDOW_SHOWN);
 
 	if (!this->_window)
 		throw "SDL failed to create window";
@@ -39,9 +39,9 @@ void SDL2Renderer::setCellColour(int x, int y, Colour colour)
 	auto _color = SDL_MapRGB(this->_surface->format, r, g, b);
 
 	SDL_Rect rect = {x * this->_cellSize,
-									 y * this->_cellSize,
-									 this->_cellSize,
-									 this->_cellSize};
+					 y * this->_cellSize,
+					 this->_cellSize,
+					 this->_cellSize};
 
 	SDL_FillRect(this->_surface, &rect, _color);
 }
