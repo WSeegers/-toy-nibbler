@@ -39,6 +39,7 @@ private:
 	void handleKeys();
 	void update();
 	void render();
+	void addFood();
 
 	bool loadRenderer(eRenderer renderer);
 	void unloadRenderer();

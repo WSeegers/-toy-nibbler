@@ -5,16 +5,14 @@
 #include <stdexcept>
 
 const char *rendererPaths[2] =
-		{AS_DYNLIB("/SDL2Renderer/libSDL2Renderer"),
-		 AS_DYNLIB("/SFMLRenderer/libSFMLRenderer")};
+	{AS_DYNLIB("/SDL2Renderer/libSDL2Renderer"),
+	 AS_DYNLIB("/SFMLRenderer/libSFMLRenderer")};
 
 NibblerEngine::NibblerEngine(const std::string &path, uint width, uint height)
-		: _path(path),
-			_cellMap(width, height)
+	: _path(path),
+	  _cellMap(width, height)
 {
-	this->_cellMap.setCell(Vec2i(10, 10), eCellType::wall);
-	this->_cellMap.setCell(Vec2i(10, 11), eCellType::food);
-	this->_cellMap.setCell(Vec2i(11, 10), eCellType::food);
+	this->addFood();
 
 	this->_snake.setPosition(Vec2i(width / 2, height / 2));
 
@@ -95,6 +93,7 @@ void NibblerEngine::update()
 		break;
 	case eCellType::food:
 		this->_snake.grow();
+		this->addFood();
 		this->_cellMap.setCell(this->_snake.head(), eCellType::empty);
 		break;
 	case eCellType::wall:
@@ -155,8 +154,16 @@ bool NibblerEngine::loadRenderer(eRenderer selectedRenderer)
 
 	this->_renderer = getRendererInstance();
 	this->_renderer->init(
-			this->_cellMap.width(),
-			this->_cellMap.height(),
-			this->cellSize);
+		this->_cellMap.width(),
+		this->_cellMap.height(),
+		this->cellSize);
 	return true;
+}
+
+void NibblerEngine::addFood()
+{
+	Vec2i foodPos(
+		std::rand() % (this->_cellMap.width() - 1) + 1,
+		std::rand() % (this->_cellMap.height() - 1) + 1);
+	this->_cellMap.setCell(foodPos, eCellType::food);
 }

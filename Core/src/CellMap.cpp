@@ -3,9 +3,9 @@
 #include <stdexcept>
 
 CellMap::CellMap(uint32_t width, uint32_t height)
-		: _map(width * height),
-			_width(width),
-			_height(height)
+	: _map(width * height),
+	  _width(width),
+	  _height(height)
 {
 	this->setBoarder();
 }
@@ -39,7 +39,7 @@ void CellMap::render(IRenderer &renderer) const
 void CellMap::assertInBounds(Vec2i pos)
 {
 	if (pos.y < 0 || pos.y > this->_height ||
-			pos.x < 0 || pos.x > _width)
+		pos.x < 0 || pos.x > _width)
 		throw std::runtime_error("Position out of bounds");
 }
 
@@ -53,6 +53,8 @@ void CellMap::setBoarder()
 	{
 		this->setCell(Vec2i(x, y), eCellType::wall);
 		this->setCell(Vec2i(x, this->_height - 1), eCellType::wall);
+		this->setCell(Vec2i(y, x), eCellType::wall);
+		this->setCell(Vec2i(this->_width - 1, x), eCellType::wall);
 	}
 }
 
